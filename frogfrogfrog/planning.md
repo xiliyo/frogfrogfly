@@ -5,6 +5,7 @@
 The initial idea:
 
 > Frog eating flies
+> Adding instructions and a shop to gameify it more.
 
 ## Experience design
 
@@ -18,23 +19,43 @@ Basic things to do:
 
 - Draw the frog (image? a circle?)
 - Draw the tongue...
-- Move the frog (how? mouse? keyboard? breathing?)
-- Move the fly (in line? buzzing around? random?)
+- Move the frog by clicking.
+- Move the fly in a straight line with varying velocities.
+- Make the fly spawn with vary speeds, sizes, and colours corresponding to it's colour.
 - Figure out if the tongue hits the fly?
+- Add a score.
+- Add a state for a shop menu.
+- Add a state for instructions menu.
 
 Questions:
 
 - What does the frog look like?
     - Circles!
+
 - How does the user control the frog?
+
     - User controls frog with the mouse position, just to the left and right
+    
     - User launches the tongue with a mouse click
-- How does the fly move?
+
+- How does the fly work?
+
     - The fly starts on the left at a random y position, and moves to the right in a line
+
+    - Different coloured flies that give play power ups (making tongue move faster) / power downs.
+        - Blue flies that make the tongue move faster because it’s the frog’s favourite snack lol.
+        - Purple flies that make the tongue slow.
+        - Horrible brown fly that makes player movement inverted.
+
+    - There will be randomly sized flies that give players different scores
+    - The flies will also have a random movement speed
+
 - What does the tongue look like?
     - A red line coming out of the frog...
+
 - What happens if the user doesn't catch the fly?
     - If the fly goes off the right side, it just resets to a new random y on the left
+
 - What does it all look like on the screen? Layout?
     - Frog at the bottom, fly moving across, tongue shooting out of frog
 
@@ -48,6 +69,7 @@ What is there?
     - What is the tongue doing?
 - The fly
     - Position and the size
+    - Colour
     - Velocity
 
 ```
@@ -69,6 +91,11 @@ fly
     size
     speed
 ```
+
+shop 
+    score (for purchases)
+    items (to up your score, like cookie clicker)
+
 
 What happens in this project?
 
@@ -97,10 +124,17 @@ What happens in this project?
         - Check if tongue circle and fly circle overlap
         - If they do, then reset the fly
         - If they don't.... nothing... just keep being a tongue
+    - Draw the shop button
 
 Events
 
 - If the user clicks the mouse
     - If the tongue is still inside the frog's mouth
         - Launch the tongue
+            - If fly is caught
+                - Add to score
 
+- If the user clicks the shop button
+    - Open shop state/ window displaying all items available
+        - If user clicks and item and has enough score
+           -   
