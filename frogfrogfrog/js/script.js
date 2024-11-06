@@ -15,6 +15,34 @@
 
 "use strict";
 
+// States for each screen of the game
+const States = {
+  TITLE: "title",
+  GAME: "game",
+  SHOP: "shop"
+};
+
+// Start out with the state being the title screen on play
+let state = States.TITLE;
+
+let subTitle = [
+  "Now with added capitalism!", 
+  "We coloured the flies!", 
+  "Oh god.", 
+  "I love frogggggggggggggggg.", 
+  "Protip: Click to lick.", 
+  "Apparently this is my life now.", 
+  "I miss my wife, tails.", 
+  "Sometimes you just gotta frog.", 
+  "Yeahhhh the visuals still suck but hey, now there's a shop!"
+];
+
+// Store the current subtitle index
+let currentSubtitle;
+
+// Label the title
+let titleString = "FrogFrogFly";
+
 // Our frog
 const frog = {
     // The frog's body has a position and size
@@ -48,12 +76,49 @@ const fly = {
  */
 function setup() {
     createCanvas(640, 480);
-
+    // Select a random subtitle when the game starts
+    currentSubtitle = floor(math.Random(subTitle.length));
     // Give the fly its first random position
     resetFly();
 }
 
 function draw() {
+  if (state === States.TITLE) {
+    title();
+  }
+  else if (state === States.GAME) {
+    game();
+  }
+  else if (state === States.SHOP) {
+    shop();
+  }
+}
+
+function title() {
+    background("black");
+    
+    // Draw main title
+    push();
+    fill("#ffffff");
+    textSize(30);
+    textAlign(CENTER);
+    text(titleString, width / 2, height / 2 - 30);
+    pop();
+    
+    // Draw subtitle
+    push();
+    fill("#ffffff");
+    textSize(16);
+    textAlign(CENTER);
+    text(subTitle[currentSubtitle], width / 2, height / 2 + 10);
+    pop();
+    
+    if (mouseIsPressed) {
+        state = States.GAME;
+    }
+}
+
+function game() { 
     background("#87ceeb");
     moveFly();
     drawFly();
@@ -179,4 +244,11 @@ function mousePressed() {
     if (frog.tongue.state === "idle") {
         frog.tongue.state = "outbound";
     }
+}
+ 
+/**
+ * Opens the shop
+ */
+function shop() {
+  
 }
