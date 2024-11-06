@@ -52,8 +52,10 @@ let sky = {
     // Draw the nice blue water that is just a rectangle
     drawWater();
     
+    // Checks if the minimum wave amount goes beyond the canvas
     checkFlood();
     
+    // Draws a yellow strip of sand, it is just a rectangle
     drawSand();
     
   }
@@ -132,7 +134,11 @@ let sky = {
     pop();
   }
   
-  // draw a yellow strip of sand
+    /**
+    * Draw Sand Function
+    * 
+    * Draws a yellow strip of sand, it is just a rectangle
+    */
   function drawSand() {
     push();
     rectMode(CENTER);
@@ -141,21 +147,26 @@ let sky = {
     rect(450, 700, 900, 200);
     pop();
   }
-  
+   /**
+   * Check Flood
+   * 
+   * Checks if the minimum wave amount goes beyond the canvas
+   */
   function checkFlood() {
     if (wave.min >= 1300) {
       floodMessage();
     }
   }
   
+  // Print the fish if the check flood criteria is met
   function floodMessage() {
       textSize(32);
       textAlign(CENTER, CENTER);
       fill(0); // Set text color to black for visibility
-      text("🐟 More room for me!", 450, 300);
+      text("🐟 🐟 🐟", 450, 300);
   }
   
-  
+  // If the mouse is clicked, change the size of the waves
   function mouseClicked() {
       wave.max += 100 ;
       wave.min += 100 ;
