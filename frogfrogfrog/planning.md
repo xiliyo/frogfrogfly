@@ -45,7 +45,7 @@ Questions:
     - Different coloured flies that give play power ups (making tongue move faster) / power downs.
         - Blue flies that make the tongue move faster because it’s the frog’s favourite snack lol.
         - Purple flies that make the tongue slow.
-        - Horrible brown fly that makes player movement inverted.
+        - Horrible brown fly that deducts points.
 
     - There will be randomly sized flies that give players different scores
     - The flies will also have a random movement speed

@@ -75,15 +75,14 @@ const fly = {
     x: 0,
     y: 200, // Will be random
     size: 10, // Will be random
-    speed: 3
+    speed: 3,
+    color: ["black","blue", "purple", "brown"]
 };
 
 /**SHOP STATE VARIABLES**/
 
 // Name for shop button
 const shopButtonString = "Shop";
-
-
 
 // Store the score
 let score = 0; 
@@ -96,7 +95,7 @@ let score = 0;
 function setup() {
     createCanvas(640, 480);
     // Select a random subtitle when the game starts
-    currentSubtitle = floor(math.Random(subTitle.length));
+    currentSubtitle = random(0 , subTitle.length);
     // Give the fly its first random position
     resetFly();
 }
@@ -178,7 +177,7 @@ function moveFly() {
 function drawFly() {
     push();
     noStroke();
-    fill("#000000");
+    fill(fly.color);
     ellipse(fly.x, fly.y, fly.size);
     pop();
 }
@@ -265,6 +264,7 @@ function checkTongueFlyOverlap() {
     if (eaten) {
         // Reset the fly
         resetFly();
+        addScore();
         // Bring back the tongue
         frog.tongue.state = "inbound";
     }
@@ -283,7 +283,7 @@ function mousePressed() {
  * Adds to score
  */
 function addScore() {
-    score = score + 1;
+    score += score;
 }
 
 /**
@@ -345,7 +345,7 @@ function drawBackButton{
 }
     
    function checkGoBack{    
-    if (mouseIsPressed && mouseX > 20 && mouseX < 120 && mouseY > height - 60 && mouseY < height - 20) {
+    if (mouseIsPressed) {
     state = States.GAME;   
     }
 }
