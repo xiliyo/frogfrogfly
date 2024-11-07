@@ -15,6 +15,8 @@
 
 "use strict";
 
+/*VARIABLES---------------------------------------------------------*/ 
+
 // States for each screen of the game
 const States = {
   TITLE: "title",
@@ -22,9 +24,13 @@ const States = {
   SHOP: "shop"
 };
 
+
+/**TITLE STATE VARIABLES**/
+
 // Start out with the state being the title screen on play
 let state = States.TITLE;
 
+// A bunch of random silly phrases that will go under the title
 let subTitle = [
   "Now with added capitalism!", 
   "We coloured the flies!", 
@@ -43,6 +49,7 @@ let currentSubtitle;
 // Label the title
 let titleString = "FrogFrogFly";
 
+/**GAME STATE VARIABLES**/
 // Our frog
 const frog = {
     // The frog's body has a position and size
@@ -71,6 +78,18 @@ const fly = {
     speed: 3
 };
 
+/**SHOP STATE VARIABLES**/
+
+// Name for shop button
+const shopButtonString = "Shop";
+
+
+
+// Store the score
+let score = 0; 
+
+/*************************************************************************/
+
 /**
  * Creates the canvas and initializes the fly
  */
@@ -83,17 +102,23 @@ function setup() {
 }
 
 function draw() {
+    // Title state
   if (state === States.TITLE) {
     title();
-  }
+  } // Game state
   else if (state === States.GAME) {
     game();
-  }
+  } // Shop State
   else if (state === States.SHOP) {
     shop();
   }
 }
 
+/*TITLE STATE---------------------------------------------------------*/
+
+/**
+ * Draws the Title state
+ */
 function title() {
     background("black");
     
@@ -118,6 +143,11 @@ function title() {
     }
 }
 
+/*GAME STATE---------------------------------------------------------*/
+
+/**
+ * Draws the Game state
+ */
 function game() { 
     background("#87ceeb");
     moveFly();
@@ -126,6 +156,7 @@ function game() {
     moveTongue();
     drawFrog();
     checkTongueFlyOverlap();
+    drawScore();
 }
 
 /**
@@ -221,6 +252,8 @@ function drawFrog() {
     pop();
 }
 
+/*GAME CALCULATIONS---------------------------------------------------------*/
+
 /**
  * Handles the tongue overlapping the fly
  */
@@ -245,10 +278,83 @@ function mousePressed() {
         frog.tongue.state = "outbound";
     }
 }
- 
+
 /**
- * Opens the shop
+ * Adds to score
+ */
+function addScore() {
+    score = score + 1;
+}
+
+/**
+ * Draws the score
+ */
+function drawScore() {
+    push();
+    fill("#ffffff");
+    textSize(30);
+    textAlign(CENTER);
+    text(titleString, width / 2, height / 2 - 30);
+    pop();
+
+}
+
+/**
+ * Adds to score
+ */
+function drawShopButton() {
+    push();
+    fill("#ffffff");
+    textSize(30);
+    textAlign(RIGHT);
+    text(shopButtonString, width, height / 5);
+    pop();
+}
+
+/*SHOP STATE---------------------------------------------------------*/
+
+/**
+ * Draws shop state
  */
 function shop() {
-  
+    background("#4a4a4a");
+    drawScore();
+    drawShopTitle();
+    drawBackButton();
+
+
+function drawShopTitle{
+    push();
+    fill("#ffffff");
+    textSize(30);
+    textAlign(CENTER);
+    text("Shop", width/2, 50);
+    pop();
+}
+
+    
+function drawBackButton{    
+    push();
+    fill("#ffffff");
+    rect(20, height - 60, 100, 40);
+    fill("#000000");
+    textSize(20);
+    textAlign(CENTER);
+    text("Back", 70, height - 35);
+    pop();
+}
+    
+   function checkGoBack{    
+    if (mouseIsPressed && mouseX > 20 && mouseX < 120 && mouseY > height - 60 && mouseY < height - 20) {
+    state = States.GAME;   
+    }
+}
+
+function drawScore(){
+    push();
+    fill("#ffffff");
+    textSize(30);
+    textAlign(LEFT);
+    text(score, 20, 40);
+    pop();
 }

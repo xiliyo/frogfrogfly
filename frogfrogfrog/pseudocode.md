@@ -16,8 +16,8 @@ frog
 fly
     x: 0 // The left
     y: 200? // This will be a random position...
-    size: 10 // Small?
-    speed: 3 // How fast it moves across the screen
+    size: 10 // This will be randomized from 10 - 25
+    speed: 3 // How fast it moves across the screen, will be random from 3 - 10
 
 setup()
     Create a 640x480 canvas
