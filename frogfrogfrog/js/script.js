@@ -31,19 +31,23 @@ const States = {
 let state = States.TITLE;
 
 // A bunch of random silly phrases that will go under the title
-let subTitle = [
-  "Now with added capitalism!", 
-  "We coloured the flies!", 
-  "Oh god.", 
-  "I love frogggggggggggggggg.", 
-  "Protip: Click to lick.", 
-  "Apparently this is my life now.", 
-  "I miss my wife, tails.", 
-  "Sometimes you just gotta frog.", 
-  "Yeahhhh the visuals still suck but hey, now there's a shop!"
+let subtitle = [
+  'Now with added capitalism!', 
+  'We coloured the flies!', 
+  'Oh god.', 
+  'I love frogggggggggggggggg.', 
+  'Protip: Click to lick.', 
+  'Apparently this is my life now.', 
+  'I miss my wife, tails.', 
+  'Sometimes you just gotta frog.', 
+  'Yeahhhh the visuals still suck but hey, now there is a shop!',
+  'The black flies are the normal ones, by the way. They dont do anything special.',
+  'The purple flies make your tongue go slower! Permanently!',
+  'The blue flies have something in it that will make you go brrr...',
+  'The brown flies deduct points... Cause they are NOT flies...'
 ];
 
-// Store the current subtitle index
+// Current subtitle
 let currentSubtitle;
 
 // Label the title
@@ -74,9 +78,14 @@ const frog = {
 const fly = {
     x: 0,
     y: 200, // Will be random
-    size: 10, // Will be random
+    size: ['10',// Will be random
+           '20',
+           '30'],
     speed: 3,
-    color: ["black","blue", "purple", "brown"]
+    color: ["black", // Will be random
+            "blue", 
+            "purple", 
+            "brown"]
 };
 
 /**SHOP STATE VARIABLES**/
@@ -94,8 +103,8 @@ let score = 0;
  */
 function setup() {
     createCanvas(640, 480);
-    // Select a random subtitle when the game starts
-    currentSubtitle = random(0 , subTitle.length);
+  // Select a random subtitle when the game starts
+  currentSubtitle = random(subtitle);
     // Give the fly its first random position
     resetFly();
 }
@@ -134,7 +143,7 @@ function title() {
     fill("#ffffff");
     textSize(16);
     textAlign(CENTER);
-    text(subTitle[currentSubtitle], width / 2, height / 2 + 10);
+    text(currentSubtitle, width / 2, height / 2 + 10);
     pop();
     
     if (mouseIsPressed) {
@@ -264,6 +273,7 @@ function checkTongueFlyOverlap() {
     if (eaten) {
         // Reset the fly
         resetFly();
+        // Add to the score
         addScore();
         // Bring back the tongue
         frog.tongue.state = "inbound";
@@ -321,19 +331,19 @@ function shop() {
     drawScore();
     drawShopTitle();
     drawBackButton();
+}
 
-
-function drawShopTitle{
+function drawShopTitle() {
     push();
     fill("#ffffff");
     textSize(30);
     textAlign(CENTER);
-    text("Shop", width/2, 50);
+    text(shopButtonString, width/2, 50);
     pop();
 }
 
     
-function drawBackButton{    
+function drawBackButton() {    
     push();
     fill("#ffffff");
     rect(20, height - 60, 100, 40);
@@ -344,13 +354,13 @@ function drawBackButton{
     pop();
 }
     
-   function checkGoBack{    
+   function checkGoBack() {    
     if (mouseIsPressed) {
     state = States.GAME;   
     }
 }
 
-function drawScore(){
+function drawScore() {
     push();
     fill("#ffffff");
     textSize(30);
