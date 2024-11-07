@@ -78,15 +78,11 @@ const frog = {
 const fly = {
     x: 0,
     y: 200, // Will be random
-    size: ['10',// Will be random
-           '20',
-           '30'],
+    size: 20, // Will be random
     speed: 3,
-    color: ["black", // Will be random
-            "blue", 
-            "purple", 
-            "brown"]
 };
+
+let flyColor = ["rgb(0,0,0)", "rgb(133,0,255)", "rgb(0,18,255)", "rgb(100,78,62)"];
 
 /**SHOP STATE VARIABLES**/
 
@@ -181,22 +177,25 @@ function moveFly() {
 }
 
 /**
- * Draws the fly as a black circle
- */
-function drawFly() {
-    push();
-    noStroke();
-    fill(fly.color);
-    ellipse(fly.x, fly.y, fly.size);
-    pop();
-}
-
-/**
  * Resets the fly to the left with a random y
  */
 function resetFly() {
     fly.x = 0;
     fly.y = random(0, 300);
+    fly.size = random(5, 30);
+    fly.speed = random (3, 9);
+    flyColor = random(flyColor);
+}
+
+/**
+ * Draws the fly as a black circle
+ */
+function drawFly() {
+    push();
+    noStroke();
+    fill(flyColor);
+    ellipse(fly.x, fly.y, fly.size);
+    pop();
 }
 
 /**
