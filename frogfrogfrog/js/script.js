@@ -7,7 +7,8 @@
  * Instructions:
  * - Move the frog with your mouse
  * - Click to launch the tongue
- * - Catch flies
+ * - Catch flies of black, purple, blue, and brown variety.
+ * - Participate in the frog economy with the shop button
  * 
  * Made with p5
  * https://p5js.org/
@@ -44,10 +45,11 @@ let subtitle = [
   'The black flies are the normal ones, by the way. They dont do anything special.',
   'The purple flies make your tongue go slower! Permanently!',
   'The blue flies have something in it that will make you go brrr...',
-  'The brown flies deduct points... Cause they are NOT flies...'
+  'The brown flies deduct points... Cause they are NOT flies...',
+  'Press E to shop.'
 ];
 
-// Current subtitle
+// Current subtitle, will be random
 let currentSubtitle;
 
 // Label the title
@@ -75,8 +77,8 @@ const frog = {
     },
     // The frog's eyes has a position, and size
     eyes:  {
-        x:  [100,330],
-        y: 530,
+        x:  [-50, 50],
+        y: 450,
         size:  [50,10]
     }
 };
@@ -97,7 +99,7 @@ let flyColor = ["rgb(0,0,0)", "rgb(133,0,255)", "rgb(0,18,255)", "rgb(100,78,62)
 /**SHOP STATE VARIABLES**/
 
 // Name for shop button
-const shopButtonString = "Shop";
+const shopButtonString = "press E to shop";
 
 // Store the score
 let score = 0; 
@@ -107,15 +109,15 @@ let score = 0;
 /**
  * Creates the canvas and initializes the fly
  */
-function setup() {
+  function setup() {
     createCanvas(640, 480);
   // Select a random subtitle when the game starts
   currentSubtitle = random(subtitle);
     // Give the fly its first random position
     resetFly();
-}
+  }
 
-function draw() {
+  function draw() {
     // Title state
   if (state === States.TITLE) {
     title();
@@ -125,15 +127,15 @@ function draw() {
   } // Shop State
   else if (state === States.SHOP) {
     shop();
+    }
   }
-}
 
 /*TITLE STATE---------------------------------------------------------*/
 
 /**
  * Draws the Title state
  */
-function title() {
+  function title() {
     background("black");
     
     // Draw main title
@@ -155,14 +157,14 @@ function title() {
     if (mouseIsPressed) {
         state = States.GAME;
     }
-}
+  }
 
 /*GAME STATE---------------------------------------------------------*/
 
 /**
  * Draws the Game state
  */
-function game() { 
+  function game() { 
     background("#87ceeb");
     moveFly();
     drawFly();
@@ -170,26 +172,27 @@ function game() {
     moveTongue();
     drawFrog();
     checkTongueFlyOverlap();
+    drawShopButton();
     drawScore();
-}
+  }
 
 /**
  * Moves the fly according to its speed
  * Resets the fly if it gets all the way to the right
  */
-function moveFly() {
+  function moveFly() {
     // Move the fly
     fly.x += fly.speed;
     // Handle the fly going off the canvas
     if (fly.x > width) {
         resetFly();
     }
-}
+  }
 
 /**
  * Resets the fly to the left with a random y
  */
-function resetFly() {
+  function resetFly() {
     fly.x = 0;
     fly.y = random(0, 300);
     fly.size = random(5, 30);
@@ -197,30 +200,30 @@ function resetFly() {
   
     // Randomly select a color from the flyColor array
     fly.color = random(flyColor);
-}
+  }
 
 /**
  * Draws the fly as a black circle
  */
-function drawFly() {
+  function drawFly() {
     push();
     noStroke();
     fill(fly.color);
     ellipse(fly.x, fly.y, fly.size);
     pop();
-}
+  }
 
 /**
  * Moves the frog to the mouse position on x
  */
-function moveFrog() {
+  function moveFrog() {
     frog.body.x = mouseX;
-}
+  }
 
 /**
  * Handles moving the tongue based on its state
  */
-function moveTongue() {
+  function moveTongue() {
     // Tongue matches the frog's x
     frog.tongue.x = frog.body.x;
     // If the tongue is idle, it doesn't do anything
@@ -242,13 +245,13 @@ function moveTongue() {
         if (frog.tongue.y >= height) {
             frog.tongue.state = "idle";
         }
+      }
     }
-}
 
 /**
  * Displays the tongue (tip and line connection) and the frog (body)
  */
-function drawFrog() {
+  function drawFrog() {
     // Draw the tongue tip
     push();
     fill("#ff0000");
@@ -274,35 +277,35 @@ function drawFrog() {
     push();
     fill("#ffffff");
     noStroke();
-    ellipse(frog.eyes.x[0], frog.eyes.y, frog.eyes.size[0]);
+    ellipse(frog.eyes.x[0] + mouseX, frog.eyes.y, frog.eyes.size[0]);
     pop();
   
     push();
     fill("#ffffff");
     noStroke();
-    ellipse(frog.eyes.x[1], frog.eyes.y, frog.eyes.size[0]);
+    ellipse(frog.eyes.x[1] + mouseX, frog.eyes.y, frog.eyes.size[0]);
     pop();
   
     // Draw frog's pupils
     push();
     fill("#000000");
     noStroke();
-    ellipse(frog.eyes.x[0], frog.eyes.y, frog.eyes.size[1]);
+    ellipse(frog.eyes.x[0] + mouseX, frog.eyes.y, frog.eyes.size[1]);
     pop();
   
     push();
     fill("#000000");
     noStroke();
-    ellipse(frog.eyes.x[1], frog.eyes.y, frog.eyes.size[1]);
+    ellipse(frog.eyes.x[1] + mouseX, frog.eyes.y, frog.eyes.size[1]);
     pop();
-}
+  }
 
 /*GAME CALCULATIONS---------------------------------------------------------*/
 
 /**
  * Handles the tongue overlapping the fly
  */
-function checkTongueFlyOverlap() {
+  function checkTongueFlyOverlap() {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, fly.x, fly.y);
     // Check if it's an overlap
@@ -315,50 +318,42 @@ function checkTongueFlyOverlap() {
         // Bring back the tongue
         frog.tongue.state = "inbound";
     }
-}
+  }
 
 /**
  * Launch the tongue on click (if it's not launched yet)
  */
-function mousePressed() {
+  function mousePressed() {
     if (frog.tongue.state === "idle") {
         frog.tongue.state = "outbound";
-    }
-}
+  }
 
 
 /**
  * Adds to score
  */
-function calculateScore() {
-    if(fly.color === "rgb(0,0,0)") {  // Black fly (normal) 
+  function calculateScore() {
+      if(fly.color === "rgb(0,0,0)") {  // Black fly (normal) 
             score += 1;
     
-    } else if (fly.color === "rgb(133,0,255)") {  // Purple fly (slows tongue)
+      } else if (fly.color === "rgb(133,0,255)") {  // Purple fly (slows tongue)
             score += 2;
             frog.tongue.speed -= 1; // Decrease speed 
       
-    } else if (fly.color === "rgb(0,18,255)")  {  // Blue fly (speed boost)
+      } else if (fly.color === "rgb(0,18,255)")  {  // Blue fly (speed boost)
             score += 3;
             frog.tongue.speed += 1;
       
-    } else if (fly.color === "rgb(100,78,62)") {// Brown fly (penalty)
+      } else if (fly.color === "rgb(100,78,62)") {// Brown fly (penalty)
             score -= 1; // Subtract point
           
-    }
-}
-
-/**
- * Adds to score
- */
-function addScore() {
-    score += score;
-}
+      }
+  }
 
 /**
  * Draws the score
  */
-function drawScore() {
+  function drawScore() {
     push();
     fill("#ffffff");
     textSize(30);
@@ -366,45 +361,48 @@ function drawScore() {
     text(titleString, width / 2, height / 2 - 30);
     pop();
 
-}
+  }
 
 
 
 /**
  * Draws the shop button for the game state
  */
-function drawShopButton() {
+  function drawShopButton() {
     push();
     fill("#ffffff");
     textSize(30);
     textAlign(RIGHT);
-    text(shopButtonString, width, height);
+    text(shopButtonString, width, 30);
     pop();
-}
+  }
 
 /*SHOP STATE---------------------------------------------------------*/
 
 /**
  * Draws shop state
  */
-function shop() {
+  function shop() {
     background("#4a4a4a");
     drawScore();
     drawShopTitle();
     drawBackButton();
-}
+  }
 
-function drawShopTitle() {
+/**
+ * Draws shop title
+ */
+  function drawShopTitle() {
     push();
     fill("#ffffff");
     textSize(30);
     textAlign(CENTER);
     text(shopButtonString, width/2, 50);
     pop();
-}
+  }
 
     
-function drawBackButton() {    
+  function drawBackButton() {    
     push();
     fill("#ffffff");
     rect(20, height - 60, 100, 40);
@@ -413,15 +411,15 @@ function drawBackButton() {
     textAlign(CENTER);
     text("Back", 70, height - 35);
     pop();
-}
+  }
     
    function checkGoBack() {    
     if (mouseIsPressed) {
     state = States.GAME;   
     }
-}
+  }
 
-function drawScore() {
+    function drawScore() {
     push();
     fill("#ffffff");
     textSize(30);
@@ -429,3 +427,4 @@ function drawScore() {
     text(score, 20, 40);
     pop();
 }
+  
