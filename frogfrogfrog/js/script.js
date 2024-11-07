@@ -53,7 +53,9 @@ let currentSubtitle;
 // Label the title
 let titleString = "FrogFrogFly";
 
+
 /**GAME STATE VARIABLES**/
+
 // Our frog
 const frog = {
     // The frog's body has a position and size
@@ -70,6 +72,12 @@ const frog = {
         speed: 20,
         // Determines how the tongue moves each frame
         state: "idle" // State can be: idle, outbound, inbound
+    },
+    // The frog's eyes has a position, and size
+    eyes:  {
+        x:  [100,330],
+        y: 530,
+        size:  [50,10]
     }
 };
 
@@ -80,9 +88,11 @@ const fly = {
     y: 200, // Will be random
     size: 20, // Will be random
     speed: 3,
+    color: "rgb(0,0,0)" // Default color
 };
 
 let flyColor = ["rgb(0,0,0)", "rgb(133,0,255)", "rgb(0,18,255)", "rgb(100,78,62)"];
+
 
 /**SHOP STATE VARIABLES**/
 
@@ -184,7 +194,9 @@ function resetFly() {
     fly.y = random(0, 300);
     fly.size = random(5, 30);
     fly.speed = random (3, 9);
-    flyColor = random(flyColor);
+  
+    // Randomly select a color from the flyColor array
+    fly.color = random(flyColor);
 }
 
 /**
@@ -193,7 +205,7 @@ function resetFly() {
 function drawFly() {
     push();
     noStroke();
-    fill(flyColor);
+    fill(fly.color);
     ellipse(fly.x, fly.y, fly.size);
     pop();
 }
@@ -257,6 +269,32 @@ function drawFrog() {
     noStroke();
     ellipse(frog.body.x, frog.body.y, frog.body.size);
     pop();
+
+    // Draw the frog's eyes
+    push();
+    fill("#ffffff");
+    noStroke();
+    ellipse(frog.eyes.x[0], frog.eyes.y, frog.eyes.size[0]);
+    pop();
+  
+    push();
+    fill("#ffffff");
+    noStroke();
+    ellipse(frog.eyes.x[1], frog.eyes.y, frog.eyes.size[0]);
+    pop();
+  
+    // Draw frog's pupils
+    push();
+    fill("#000000");
+    noStroke();
+    ellipse(frog.eyes.x[0], frog.eyes.y, frog.eyes.size[1]);
+    pop();
+  
+    push();
+    fill("#000000");
+    noStroke();
+    ellipse(frog.eyes.x[1], frog.eyes.y, frog.eyes.size[1]);
+    pop();
 }
 
 /*GAME CALCULATIONS---------------------------------------------------------*/
@@ -270,10 +308,10 @@ function checkTongueFlyOverlap() {
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size/2 + fly.size/2);
     if (eaten) {
-        // Reset the fly
+       // Add to the score
+        calculateScore();  
+      // Reset the fly
         resetFly();
-        // Add to the score
-        addScore();
         // Bring back the tongue
         frog.tongue.state = "inbound";
     }
@@ -285,6 +323,28 @@ function checkTongueFlyOverlap() {
 function mousePressed() {
     if (frog.tongue.state === "idle") {
         frog.tongue.state = "outbound";
+    }
+}
+
+
+/**
+ * Adds to score
+ */
+function calculateScore() {
+    if(fly.color === "rgb(0,0,0)") {  // Black fly (normal) 
+            score += 1;
+    
+    } else if (fly.color === "rgb(133,0,255)") {  // Purple fly (slows tongue)
+            score += 2;
+            frog.tongue.speed -= 1; // Decrease speed 
+      
+    } else if (fly.color === "rgb(0,18,255)")  {  // Blue fly (speed boost)
+            score += 3;
+            frog.tongue.speed += 1;
+      
+    } else if (fly.color === "rgb(100,78,62)") {// Brown fly (penalty)
+            score -= 1; // Subtract point
+          
     }
 }
 
@@ -308,15 +368,17 @@ function drawScore() {
 
 }
 
+
+
 /**
- * Adds to score
+ * Draws the shop button for the game state
  */
 function drawShopButton() {
     push();
     fill("#ffffff");
     textSize(30);
     textAlign(RIGHT);
-    text(shopButtonString, width, height / 5);
+    text(shopButtonString, width, height);
     pop();
 }
 
