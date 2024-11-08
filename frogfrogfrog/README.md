@@ -14,3 +14,4 @@ A game about catching flies, with added improvements such as:
 - [Ideas](./ideas.md)
 - [Planning](./planning.md)
 - [Pseudocode](./pseudocode.md)
+- [Reference for GIF loading](https://editor.p5js.org/kjhollen/sketches/S1bVzeF8Z)

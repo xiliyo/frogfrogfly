@@ -29,7 +29,7 @@ const States = {
 /**TITLE STATE VARIABLES**/
  
 // Background image variable.
-let img; 
+let gif_loadImg, gif_createImg;
 
 // Start out with the state being the title screen on play
 let state = States.TITLE;
@@ -128,7 +128,8 @@ let sizePrice = 1;
  * Loads image before canvas setup
  */
 function preload() {
-    img = loadImage('/assets/beautifulSky.gif');
+    gif_loadImg = loadImage('/assets/images/beautifulSky.gif');
+    gif_createImg = createImg('/assets/images/beautifulSky.gif');
   }
 
 /**
@@ -209,8 +210,9 @@ function game() {
  */
 drawBackground() {
     // Shows the beautiful sky
-    image(img, 0, 0);
+    image(gif_loadImg, 640, 480);
     describe('A gif of clouds over a briliant blue sky.');
+    gif_createImg.position(50, 350);
 }
 
 /**
