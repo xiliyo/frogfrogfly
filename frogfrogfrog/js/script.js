@@ -348,6 +348,7 @@ function checkTongueFlyOverlap() {
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size/2 + fly.size/2);
     if (eaten) {
+        document.getElementById('/assets/sounds/caughtFly').play();
         // Add to the score
         calculateScore();  
         // Reset the fly
@@ -372,6 +373,7 @@ function mousePressed() {
 function keyPressed() {
     if (key === 'e' || key === 'E') {
         if (state === States.GAME) {
+            document.getElementById('/assets/sounds/noFly').play();
             state = States.SHOP;
         }
     }
@@ -467,6 +469,8 @@ function checkGoBack() {
 function checkPurchase() {
     // If the user presses 1 and has enough money to purchase speed buff
     if (keyIsPressed && key === '1' && score >= speedPrice) {
+        // Cha ching plays
+        document.getElementById('/assets/sounds/chaChing').play();
         // Increase speed by 2 
         speedBuff += 2;
         // Decrease the score as payment
@@ -475,6 +479,8 @@ function checkPurchase() {
         speedPrice += 2;
     // If the user presses 2 and has enough money to purchase size buff
     } else if (keyIsPressed && key === '2' && score >= sizePrice) {
+        // Cha ching plays
+        document.getElementById('/assets/sounds/chaChing').play();
         // Increase size by 2 
         sizeBuff += 2;
         // Decrease the score as payment
