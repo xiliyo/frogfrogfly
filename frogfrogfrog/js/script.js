@@ -101,41 +101,56 @@ let flyColor = ["rgb(0,0,0)", "rgb(133,0,255)", "rgb(0,18,255)", "rgb(100,78,62)
 // Name for shop button
 const shopButtonString = "press E to shop";
 
+// Title for shop state
+const shopTitleString = "SHOP";
+
 // Store the score
 let score = 0; 
+
+// Store the speed stackables
+let speedBuff = 0;
+
+// Store the speed stackables price
+let speedPrice = 1;
+
+// Store the size stackables
+let sizeBuff = 0;
+
+// Store the size stackables price
+let sizePrice = 1;
 
 /*************************************************************************/
 
 /**
  * Creates the canvas and initializes the fly
  */
-  function setup() {
+function setup() {
     createCanvas(640, 480);
-  // Select a random subtitle when the game starts
-  currentSubtitle = random(subtitle);
+    // Select a random subtitle when the game starts
+    currentSubtitle = random(subtitle);
     // Give the fly its first random position
     resetFly();
-  }
+}
 
-  function draw() {
+function draw() {
     // Title state
-  if (state === States.TITLE) {
-    title();
-  } // Game state
-  else if (state === States.GAME) {
-    game();
-  } // Shop State
-  else if (state === States.SHOP) {
-    shop();
+    if (state === States.TITLE) {
+        title();
+    } // Game state
+    else if (state === States.GAME) {
+        game();
+    } // Shop State
+    else if (state === States.SHOP) {
+        shop();
     }
-  }
+}
 
 /*TITLE STATE---------------------------------------------------------*/
 
 /**
  * Draws the Title state
  */
-  function title() {
+function title() {
     background("black");
     
     // Draw main title
@@ -157,14 +172,14 @@ let score = 0;
     if (mouseIsPressed) {
         state = States.GAME;
     }
-  }
+}
 
 /*GAME STATE---------------------------------------------------------*/
 
 /**
  * Draws the Game state
  */
-  function game() { 
+function game() { 
     background("#87ceeb");
     moveFly();
     drawFly();
@@ -174,56 +189,56 @@ let score = 0;
     checkTongueFlyOverlap();
     drawShopButton();
     drawScore();
-  }
+}
 
 /**
  * Moves the fly according to its speed
  * Resets the fly if it gets all the way to the right
  */
-  function moveFly() {
+function moveFly() {
     // Move the fly
     fly.x += fly.speed;
     // Handle the fly going off the canvas
     if (fly.x > width) {
         resetFly();
     }
-  }
+}
 
 /**
  * Resets the fly to the left with a random y
  */
-  function resetFly() {
+function resetFly() {
     fly.x = 0;
     fly.y = random(0, 300);
-    fly.size = random(5, 30);
-    fly.speed = random (3, 9);
+    fly.size = random(5, 30) + sizeBuff;
+    fly.speed = random(3, 9);
   
     // Randomly select a color from the flyColor array
     fly.color = random(flyColor);
-  }
+}
 
 /**
  * Draws the fly as a black circle
  */
-  function drawFly() {
+function drawFly() {
     push();
     noStroke();
     fill(fly.color);
     ellipse(fly.x, fly.y, fly.size);
     pop();
-  }
+}
 
 /**
  * Moves the frog to the mouse position on x
  */
-  function moveFrog() {
+function moveFrog() {
     frog.body.x = mouseX;
-  }
+}
 
 /**
  * Handles moving the tongue based on its state
  */
-  function moveTongue() {
+function moveTongue() {
     // Tongue matches the frog's x
     frog.tongue.x = frog.body.x;
     // If the tongue is idle, it doesn't do anything
@@ -245,13 +260,13 @@ let score = 0;
         if (frog.tongue.y >= height) {
             frog.tongue.state = "idle";
         }
-      }
     }
+}
 
 /**
  * Displays the tongue (tip and line connection) and the frog (body)
  */
-  function drawFrog() {
+function drawFrog() {
     // Draw the tongue tip
     push();
     fill("#ff0000");
@@ -298,111 +313,119 @@ let score = 0;
     noStroke();
     ellipse(frog.eyes.x[1] + mouseX, frog.eyes.y, frog.eyes.size[1]);
     pop();
-  }
+}
 
 /*GAME CALCULATIONS---------------------------------------------------------*/
 
 /**
  * Handles the tongue overlapping the fly
  */
-  function checkTongueFlyOverlap() {
+function checkTongueFlyOverlap() {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, fly.x, fly.y);
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size/2 + fly.size/2);
     if (eaten) {
-       // Add to the score
+        // Add to the score
         calculateScore();  
-      // Reset the fly
+        // Reset the fly
         resetFly();
         // Bring back the tongue
         frog.tongue.state = "inbound";
     }
-  }
+}
 
 /**
  * Launch the tongue on click (if it's not launched yet)
  */
-  function mousePressed() {
+function mousePressed() {
     if (frog.tongue.state === "idle") {
         frog.tongue.state = "outbound";
-  }
+    }
+}
 
+/**
+ * Add keyboard handling for the shop
+ */
+function keyPressed() {
+    if (key === 'e' || key === 'E') {
+        if (state === States.GAME) {
+            state = States.SHOP;
+        }
+    }
+}
 
 /**
  * Adds to score
  */
-  function calculateScore() {
-      if(fly.color === "rgb(0,0,0)") {  // Black fly (normal) 
-            score += 1;
-    
-      } else if (fly.color === "rgb(133,0,255)") {  // Purple fly (slows tongue)
-            score += 2;
-            frog.tongue.speed -= 1; // Decrease speed 
-      
-      } else if (fly.color === "rgb(0,18,255)")  {  // Blue fly (speed boost)
-            score += 3;
-            frog.tongue.speed += 1;
-      
-      } else if (fly.color === "rgb(100,78,62)") {// Brown fly (penalty)
-            score -= 1; // Subtract point
-          
-      }
-  }
-
-/**
- * Draws the score
- */
-  function drawScore() {
-    push();
-    fill("#ffffff");
-    textSize(30);
-    textAlign(CENTER);
-    text(titleString, width / 2, height / 2 - 30);
-    pop();
-
-  }
-
-
+function calculateScore() {
+    if(fly.color === "rgb(0,0,0)") {  // Black fly (normal) 
+        score += 1;
+    } else if (fly.color === "rgb(133,0,255)") {  // Purple fly (slows tongue)
+        score += 2;
+        frog.tongue.speed -= 1; // Decrease speed 
+    } else if (fly.color === "rgb(0,18,255)")  {  // Blue fly (speed boost)
+        score += 3;
+        frog.tongue.speed += 1;
+    } else if (fly.color === "rgb(100,78,62)") {// Brown fly (penalty)
+        score -= 1; // Subtract point
+    }
+}
 
 /**
  * Draws the shop button for the game state
  */
-  function drawShopButton() {
+function drawShopButton() {
     push();
     fill("#ffffff");
     textSize(30);
     textAlign(RIGHT);
     text(shopButtonString, width, 30);
     pop();
-  }
+}
 
 /*SHOP STATE---------------------------------------------------------*/
 
 /**
  * Draws shop state
  */
-  function shop() {
+function shop() {
     background("#4a4a4a");
     drawScore();
     drawShopTitle();
+    drawShopItems();
     drawBackButton();
-  }
+    checkGoBack();
+    checkPurchase();
+}
 
 /**
  * Draws shop title
  */
-  function drawShopTitle() {
+function drawShopTitle() {
     push();
     fill("#ffffff");
     textSize(30);
     textAlign(CENTER);
-    text(shopButtonString, width/2, 50);
+    text(shopTitleString, width/2, 60);
     pop();
-  }
+}
+  
+/**
+ * Draws shop items
+ */
+function drawShopItems() {
+    push();
+    fill("#ffffff");
+    textSize(30);
+    textAlign(CENTER);
+    text("Press 1 for a tongue speed boost\nPRICE: " + speedPrice + "\n\n" +
+         "Press 2 for a fly size boost\nPRICE: " + sizePrice,
+        width/2, 150);
+    pop();
+}
 
-    
-  function drawBackButton() {    
+function drawBackButton() {    
     push();
     fill("#ffffff");
     rect(20, height - 60, 100, 40);
@@ -411,20 +434,39 @@ let score = 0;
     textAlign(CENTER);
     text("Back", 70, height - 35);
     pop();
-  }
+}
     
-   function checkGoBack() {    
+function checkGoBack() {    
     if (mouseIsPressed) {
-    state = States.GAME;   
+        state = States.GAME;   
     }
-  }
+}
+  
+function checkPurchase() {
+    // If the user presses 1 and has enough money to purchase speed buff
+    if (keyIsPressed && key === '1' && score >= speedPrice) {
+        // Increase speed by 2 
+        speedBuff += 2;
+        // Decrease the score as payment
+        score -= speedPrice;
+        // Increase future price of speed
+        speedPrice += 2;
+    // If the user presses 2 and has enough money to purchase size buff
+    } else if (keyIsPressed && key === '2' && score >= sizePrice) {
+        // Increase size by 2 
+        sizeBuff += 2;
+        // Decrease the score as payment
+        score -= sizePrice;
+        // Increase future price of size
+        sizePrice += 2;
+    }  
+}
 
-    function drawScore() {
+function drawScore() {
     push();
     fill("#ffffff");
     textSize(30);
     textAlign(LEFT);
     text(score, 20, 40);
     pop();
-}
-  
+}  
