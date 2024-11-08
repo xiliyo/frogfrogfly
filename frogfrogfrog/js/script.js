@@ -2,7 +2,7 @@
  * Frogfrogfly
  * Carael Bandojo
  * 
- * A game of catching flies with your frog-tongue, except with capitalism.
+ * A game of catching flies with your frog-tongue, except with capitalism
  * 
  * Instructions:
  * - Move the frog with your mouse
@@ -27,6 +27,9 @@ const States = {
 
 
 /**TITLE STATE VARIABLES**/
+ 
+// Background image variable.
+let img; 
 
 // Start out with the state being the title screen on play
 let state = States.TITLE;
@@ -49,7 +52,7 @@ let subtitle = [
   'Press E to shop.'
 ];
 
-// Current subtitle, will be random
+// Current subtitle, will be random.
 let currentSubtitle;
 
 // Label the title
@@ -122,6 +125,13 @@ let sizePrice = 1;
 /*************************************************************************/
 
 /**
+ * Loads image before canvas setup
+ */
+function preload() {
+    img = loadImage('/assets/beautifulSky.gif');
+  }
+
+/**
  * Creates the canvas and initializes the fly
  */
 function setup() {
@@ -132,6 +142,9 @@ function setup() {
     resetFly();
 }
 
+/**
+ * Draws the screen based on state
+ */
 function draw() {
     // Title state
     if (state === States.TITLE) {
@@ -180,7 +193,7 @@ function title() {
  * Draws the Game state
  */
 function game() { 
-    background("#87ceeb");
+    drawBackground();
     moveFly();
     drawFly();
     moveFrog();
@@ -189,6 +202,15 @@ function game() {
     checkTongueFlyOverlap();
     drawShopButton();
     drawScore();
+}
+
+/**
+ * Simply loads an image of the pretty blue sky
+ */
+drawBackground() {
+    // Shows the beautiful sky
+    image(img, 0, 0);
+    describe('A gif of clouds over a briliant blue sky.');
 }
 
 /**
