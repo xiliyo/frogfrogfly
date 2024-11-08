@@ -1,8 +1,15 @@
 # Frogfrogfrog
 
-A game about catching flies, with added improvements.
+A game about catching flies, with added improvements such as:
 
-[Play it!](https://pippinbarr.github.io/cart253-examples/topics/making/frogfrogfrog/index.html)
+- Black flies, the standard (+1)
+- Blue flies that speed you up (+3)
+- Purple flies that slow you down (+2)
+- A shop with E-z access and powerups
+- The sky.
+
+
+[Play it!](https://xiliyo.github.io/frogfrogfly/frogfrogfrog/)
 
 - [Ideas](./ideas.md)
 - [Planning](./planning.md)
