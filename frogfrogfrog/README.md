@@ -1,4 +1,4 @@
-# Frogfrogfrog
+# Frogfrogfly
 
 A game about catching flies, with added improvements such as:
 
