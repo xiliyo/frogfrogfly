@@ -31,6 +31,11 @@ const States = {
 // Background image variable.
 let gif_loadImg, gif_createImg;
 
+// Different sounds for the game
+let caughtFly;
+let chaChing;
+let noFly;
+
 // Start out with the state being the title screen on play
 let state = States.TITLE;
 
@@ -125,12 +130,17 @@ let sizePrice = 1;
 /*************************************************************************/
 
 /**
- * Loads image before canvas setup
+ * Loads images and sounds before canvas setup
  */
 function preload() {
-    gif_loadImg = loadImage('/assets/images/beautifulSky.gif');
-    gif_createImg = createImg('/assets/images/beautifulSky.gif');
-  }
+    // load up the gifs
+    gif_loadImg = loadImage('https://github.com/xiliyo/frogfrogfly/blob/main/frogfrogfrog/assets/images/beautifulSky.gif?raw=true');
+    gif_createImg = createImg('https://github.com/xiliyo/frogfrogfly/blob/main/frogfrogfrog/assets/images/beautifulSky.gif?raw=true');
+    // load up the sounds
+    caughtFly = loadSound('https://github.com/xiliyo/frogfrogfly/blob/main/frogfrogfrog/assets/sounds/caughtFly.wav');
+    chaChing = loadSound ('https://github.com/xiliyo/frogfrogfly/blob/main/frogfrogfrog/assets/sounds/chaChing.wav');
+    noFly = loadSound('https://github.com/xiliyo/frogfrogfly/blob/main/frogfrogfrog/assets/sounds/noFly.wav');
+    }
 
 /**
  * Creates the canvas and initializes the fly
@@ -350,7 +360,7 @@ function checkTongueFlyOverlap() {
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size/2 + fly.size/2);
     if (eaten) {
-        document.getElementById('/assets/sounds/caughtFly').play();
+        caughtFly.play();
         // Add to the score
         calculateScore();  
         // Reset the fly
@@ -375,7 +385,7 @@ function mousePressed() {
 function keyPressed() {
     if (key === 'e' || key === 'E') {
         if (state === States.GAME) {
-            document.getElementById('/assets/sounds/noFly').play();
+            noFly.play();
             state = States.SHOP;
         }
     }
@@ -472,7 +482,7 @@ function checkPurchase() {
     // If the user presses 1 and has enough money to purchase speed buff
     if (keyIsPressed && key === '1' && score >= speedPrice) {
         // Cha ching plays
-        document.getElementById('/assets/sounds/chaChing').play();
+       chaChing.play();
         // Increase speed by 2 
         speedBuff += 2;
         // Decrease the score as payment
@@ -482,7 +492,7 @@ function checkPurchase() {
     // If the user presses 2 and has enough money to purchase size buff
     } else if (keyIsPressed && key === '2' && score >= sizePrice) {
         // Cha ching plays
-        document.getElementById('/assets/sounds/chaChing').play();
+        chaChing.play();
         // Increase size by 2 
         sizeBuff += 2;
         // Decrease the score as payment
